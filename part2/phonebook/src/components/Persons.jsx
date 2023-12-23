@@ -5,7 +5,7 @@ const Persons= (props) => {
     return(
         <ul>
         {filteredpersons.map(p =>(
-          <Person person={p}/>
+          <Person person={p} handleDeletePerson={props.handleDeletePerson}/>
         ))}
       </ul>
     );
