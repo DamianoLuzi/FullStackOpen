@@ -4,8 +4,8 @@ const Persons= (props) => {
     console.log(filteredpersons)
     return(
         <ul>
-        {filteredpersons.map(p =>(
-          <Person person={p} handleDeletePerson={props.handleDeletePerson}/>
+        {filteredpersons.map((p,i) =>(
+          <Person key ={i} person={p} handleDeletePerson={props.handleDeletePerson}/>
         ))}
       </ul>
     );

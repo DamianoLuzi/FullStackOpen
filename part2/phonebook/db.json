@@ -1,16 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
@@ -36,9 +26,9 @@
       "id": 7
     },
     {
-      "name": "Marianne Sheridan",
-      "number": "222-222-222",
-      "id": 8
+      "name": "Luke Thompson",
+      "number": "888-888-888",
+      "id": 9
     }
   ]
 }
