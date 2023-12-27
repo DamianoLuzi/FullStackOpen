@@ -51,7 +51,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    console.log("new person",person)
+    //console.log("new person",person)
     let names = persons.map(p => p.name)
     if(!names.includes(person.name)){
       setPersons(persons.concat(person))
@@ -66,26 +66,25 @@ const App = () => {
           }, 5000)
         })
     }else if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
-      //alert(`${newName} is already added to phonebook, replace the old number witha new one?`);
       let personToUpdate = persons.find(p => p.name === person.name)
-      const updatedPerson = { ...personToUpdate, number: newNumber }
       console.log("person to update",personToUpdate)
       phonebookservice
-        .update(updatedPerson)
+        //.update(updatedPerson)
+        .update(personToUpdate,newNumber)
         .then(returnedPerson => {
-          console.log("successfully added",returnedPerson)     
+          console.log("successfully updated",returnedPerson)     
           setPersons(persons.map(p=> p.id !== person.id ? p : returnedPerson))
           setMessage(`Updated ${returnedPerson.name}'s number to ${returnedPerson.number}`)
           setNewName('')
           setNewNumber('')
         }).catch(error => {
           setMessage(
-            `ERROR: '${personToUpdate}' was already removed from server`
+            `ERROR: ${personToUpdate.name} was already removed from server`
           )
           setTimeout(() => {
             setMessage(null)
           }, 5000)
-          setPersons(persons.filter(n => n.id !== personToUpdate.id))
+          //setPersons(persons.filter(n => n.id !== personToUpdate.id))
         })
     }
     setNewName('')
@@ -100,7 +99,7 @@ const App = () => {
       <Notification message={message}/>
       <Filter filter={filter} handleFilterChange={handleFilterChange}/>
       <h3>add a new</h3>
-      <PersonForm newName={newName} newNumber={newNumber} addPerson={addPerson} handleNameChange={handleNameChange} handleNumberChange= {handleNumberChange}/>   
+      <PersonForm newName={newName} newNumber={newNumber} addPerson={addPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}/>   
       <h2>Numbers</h2>
       <Persons people={filteredpersons} handleDeletePerson={handleDeletePerson}/>
     </div>

@@ -1,8 +1,11 @@
+require('dotenv').config()
 const express = require("express")
 const morgan = require("morgan")
 const cors = require('cors')
 
 const app = express()
+
+const Person = require("./models/person")
 
 //adding a cors middleware to allow communication aross different origins (server: 3001 browser: 5173)
 app.use(cors())
@@ -63,9 +66,13 @@ app.get("/info", (req,res) => {
         <p>${date}</p>`
     )
 })
+
+
 app.get("/api/people" , (req,res) => {
-    res.json(people)
-})
+    Person.find({}).then(people => {
+          return res.json(people)
+        })
+    })
 
 app.get("/api/people/:id" , (req,res) => {
     const id = Number(req.params.id)
@@ -97,7 +104,7 @@ const generateId = () => {
 
 app.post("/api/people",(req,res)=> {
     let person = req.body
-    //console.log(person)
+    console.log("post req.body",person)
     let id = generateId()
     const alreadyAdded = people.map(p => p.name)
 
@@ -111,16 +118,20 @@ app.post("/api/people",(req,res)=> {
             error: 'name must be unique' 
           })
     }else {
-        person = {...person, id: id}
-        console.log(person)
+        person = { id: id, ...person}
+        console.log("person added in the backend ",person)
         console.log(people)
         people.push(person)
-        res.json(person)
 
+        const p = new Person({id: id, ...person})
+        p.save().then(person => {
+            console.log('person saved!')
+            res.json(person)
+        })
     }
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })

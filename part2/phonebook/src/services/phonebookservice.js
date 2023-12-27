@@ -10,7 +10,7 @@ const getAll = () => {
 }
 
 const create = newPerson => {
-	const request = axios.post(baseUrl,newPerson)
+  const request = axios.post(baseUrl,newPerson)
   return request.then(response => response.data)
 }
 
@@ -20,9 +20,12 @@ const deletePerson = (id) => {
 	return request.then(response => response.data)
 }
 
-const update = (person) => {
+const update = (person, newNumber) => {
+	const personToUpdate = person
 	console.log("person before update",person)
-	const request = axios.patch(`${baseUrl}/${person.id}`,person)
+	const updatedPerson = { ...personToUpdate, number: newNumber }
+	console.log("person after update",updatedPerson)
+	const request = axios.patch(`${baseUrl}/${updatedPerson.id}`,updatedPerson)
 	return request.then(response => response.data)
 }
 export default {getAll, create, deletePerson, update};
