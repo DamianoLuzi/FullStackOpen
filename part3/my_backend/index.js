@@ -1,6 +1,24 @@
 const express = require("express")
+const morgan = require("morgan")
+
 const app = express()
+
+//defoine middleware to show requests body
+app.use((request,response,next)=> {
+    console.log("Method: ",request.method)
+    console.log("Path: ",request.path)
+    console.log("Body: ",request.body)
+    console.log("--------------------")
+    next()
+})
+morgan.token("body",(request) => {
+    console.log("morgan")
+    return JSON.stringify(request.body)
+})
 app.use(express.json())
+//morgan predefined string format
+app.use(morgan("tiny"))
+
 let people =  [
     { 
       "id": 1,
@@ -43,8 +61,6 @@ app.get("/api/people" , (req,res) => {
 app.get("/api/people/:id" , (req,res) => {
     const id = Number(req.params.id)
     const person = people.find(p => {
-        console.log("type of people",typeof people)
-        console.log(p.id, typeof p.id, id, typeof id, p.id === id)
         return p.id === id
     })
     if (person) {
@@ -75,17 +91,24 @@ app.post("/api/people",(req,res)=> {
     //console.log(person)
     let id = generateId()
     const alreadyAdded = people.map(p => p.name)
-    if(!person.name || alreadyAdded.includes(person.name)) {
+
+    if(!req.body || !req.body.number) {
+        return response.status(400).json({
+            error: 'missing name or number'
+        })
+    } else if(alreadyAdded.includes(person.name)) {
         console.log("Already added contact or empty name")
         return res.status(400).json({ 
-            error: 'name must be unique and non-empty' 
+            error: 'name must be unique' 
           })
+    }else {
+        person = {...person, id: id}
+        console.log(person)
+        console.log(people)
+        people.push(person)
+        res.json(person)
+
     }
-    person = {...person, id: id}
-    console.log(person)
-    console.log(people)
-    people.push(person)
-    res.json(person)
 })
 
 const PORT = 3001
