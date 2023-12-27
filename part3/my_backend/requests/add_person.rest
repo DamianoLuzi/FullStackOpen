@@ -1,0 +1,15 @@
+POST http://localhost:3001/api/people
+Content-Type: application/json
+
+{
+  "name": "Connel Waldron",
+  "number": "222-222-2222"
+}
+###
+GET http://localhost:3001/api/people
+
+###
+DELETE http://localhost:3001/api/people/3
+
+###
+GET http://localhost:3001/api/people
