@@ -1,6 +1,14 @@
 const express = require("express")
 const morgan = require("morgan")
+const cors = require('cors')
 
+//the dist folder cointannins the production build of the frontend
+//express fetches the html and the javascript using the static middleware
+//if the HTTP GET request finds the correct file, it then returns it
+app.use(express.static('dist'))
+
+//adding a cors middleware to allow communication aross different origins (server: 3001 browser: 5173)
+app.use(cors())
 const app = express()
 
 //defoine middleware to show requests body
@@ -111,7 +119,7 @@ app.post("/api/people",(req,res)=> {
     }
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
