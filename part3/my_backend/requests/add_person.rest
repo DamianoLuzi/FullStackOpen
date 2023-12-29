@@ -2,14 +2,22 @@ POST http://localhost:3001/api/people
 Content-Type: application/json
 
 {
-  "name": "Kate Billington",
-  "number": "777-777-7777"
+  "name": "Christian Bale",
+  "number": "000-000-0000"
 }
 ###
 GET http://localhost:3001/api/people
 
 ###
-DELETE http://localhost:3001/api/people/3
+DELETE http://localhost:3001/api/people/658ef55cfb76f1a478167b95
 
 ###
 GET http://localhost:3001/api/people
+
+###
+PUT http://localhost:3001/api/people/658eff8bfb76f1a478167bb4
+Content-Type: application/json
+
+{
+  "number": "111-111-1111"
+}

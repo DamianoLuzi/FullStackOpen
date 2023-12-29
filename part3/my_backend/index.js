@@ -4,11 +4,12 @@ const morgan = require("morgan")
 const cors = require('cors')
 
 const app = express()
-
-const Person = require("./models/person")
-
 //adding a cors middleware to allow communication aross different origins (server: 3001 browser: 5173)
 app.use(cors())
+app.use(express.json())
+const Person = require("./models/person")
+
+
 
 //the dist folder cointannins the production build of the frontend
 //express fetches the html and the javascript using the static middleware
@@ -16,18 +17,19 @@ app.use(cors())
 app.use(express.static('dist'))
 
 //defoine middleware to show requests body
-app.use((request,response,next)=> {
+/*app.use((request,response,next)=> {
     console.log("Method: ",request.method)
     console.log("Path: ",request.path)
     console.log("Body: ",request.body)
     console.log("--------------------")
     next()
-})
+})*/
+
 morgan.token("body",(request) => {
     console.log("morgan")
     return JSON.stringify(request.body)
 })
-app.use(express.json())
+//app.use(express.json())
 //morgan predefined string format
 app.use(morgan("tiny"))
 
@@ -65,34 +67,50 @@ app.get("/info", (req,res) => {
         <br>
         <p>${date}</p>`
     )
+    .catch(error => next(error))
 })
+
 
 
 app.get("/api/people" , (req,res) => {
-    Person.find({}).then(people => {
-          return res.json(people)
-        })
+    Person
+    .find({})
+    .then(people => {
+        return res.json(people)
     })
-
-app.get("/api/people/:id" , (req,res) => {
-    const id = Number(req.params.id)
-    const person = people.find(p => {
-        return p.id === id
-    })
-    if (person) {
-        res.json(person)
-      } else {
-        res.status(404).end()
-      }
+    .catch(error => next(error))
 })
 
-app.delete("/api/people/:id",(req,res) => {
-    const id = Number(req.params.id)
+app.get("/api/people/:id",(req,res,next) => {
+    console.log(`api/people/${req.params.id}`)
+    Person.findById(req.params.id)
+    .then(person => {
+    if (person) {
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
+    })
+    .catch(error => next(error))
+    /*.catch(error => {
+    console.log(error)
+    res.status(400).send({ error: 'malformatted id' })
+    })*/
+})
+
+app.delete("/api/people/:id",(req,res,next) => {
+    /*const id = Number(req.params.id)
     const person = people.filter(p => p.id === id)
     people = people.filter(p => p.id !== id)
     console.log("person to delete",person)
     console.log(people)
-    res.status(204).end()
+    res.status(204).end()*/
+    console.log("id to be deleted",req.params.id)
+    Person.findByIdAndDelete(req.params.id)
+    .then(result => {
+      return res.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 const generateId = () => {
@@ -102,13 +120,15 @@ const generateId = () => {
     return maxId + 1
   }
 
+const postMorgan = morgan(':method :url :status :res[content-length] - :response-time ms :body')
+
 app.post("/api/people",(req,res)=> {
     let person = req.body
     console.log("post req.body",person)
-    let id = generateId()
+    //let id = generateId()
     const alreadyAdded = people.map(p => p.name)
 
-    if(!req.body || !req.body.number) {
+    if(!req.body.name || !req.body.number) {
         return response.status(400).json({
             error: 'missing name or number'
         })
@@ -118,18 +138,57 @@ app.post("/api/people",(req,res)=> {
             error: 'name must be unique' 
           })
     }else {
-        person = { id: id, ...person}
+        /*person = { id:id , ...person}
         console.log("person added in the backend ",person)
         console.log(people)
-        people.push(person)
+        people.push(person)*/
 
-        const p = new Person({id: id, ...person})
+        const p = new Person({
+            //id: generateId(),
+            name: person.name,
+            number: person.number
+        })
         p.save().then(person => {
             console.log('person saved!')
             res.json(person)
         })
     }
 })
+
+app.put('/api/people/:id', (req, res, next) => {
+    const body = req.body
+    const person = {
+      name: body.name,
+      number: body.number,
+    }
+    console.log("person to update backend", person)
+    console.log("id to find to update", req.params.id)
+    Person.findByIdAndUpdate(req.params.id, person, { new: true })
+      .then(updatedPerson => {
+        res.json(updatedPerson)
+      })
+      .catch(error => next(error))
+})
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+  // handler of requests with unknown endpoint
+  app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+  
+    if (error.name === 'CastError') {
+      return response.status(400).send({ error: 'malformatted id' })
+    } 
+  
+    next(error)
+  }
+  
+// this has to be the last loaded middleware.
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
