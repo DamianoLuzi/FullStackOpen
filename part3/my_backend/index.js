@@ -16,7 +16,7 @@ const Person = require("./models/person")
 //if the HTTP GET request finds the correct file, it then returns it
 app.use(express.static('dist'))
 
-//defoine middleware to show requests body
+//define middleware to show requests body
 /*app.use((request,response,next)=> {
     console.log("Method: ",request.method)
     console.log("Path: ",request.path)

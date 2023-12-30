@@ -36,7 +36,7 @@ const App = () => {
     let personToDelete = persons.filter(p => p.id === id)
     let nameToDelete = personToDelete[0].name
     let idToDelete = personToDelete[0].id
-    if(window.confirm(`Confirm to delete ${nameToDelete}`)) {
+    if(window.confirm(`Confirm to delete ${nameToDelete} ${idToDelete}`)) {
       phonebookservice
         .deletePerson(idToDelete)
         .then(response => response.data)
@@ -65,9 +65,12 @@ const App = () => {
             setMessage(null)
           }, 5000)
         })
+        .catch(error => {
+          setChangeMessage(`[error] ${error.response.data.error}`)
+        })
     }else if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
       let personToUpdate = persons.find(p => p.name === person.name)
-      console.log("person to update",personToUpdate)
+      //console.log("person to update",personToUpdate)
       phonebookservice
         //.update(updatedPerson)
         .update(personToUpdate,newNumber)

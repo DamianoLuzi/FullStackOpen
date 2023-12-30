@@ -25,7 +25,9 @@ const update = (person, newNumber) => {
 	console.log("person before update",person)
 	const updatedPerson = { ...personToUpdate, number: newNumber }
 	console.log("person after update",updatedPerson)
-	const request = axios.patch(`${baseUrl}/${updatedPerson.id}`,updatedPerson)
+	console.log("id types",typeof person.id, typeof updatedPerson.id)
+	//const request = axios.patch(`${baseUrl}/${updatedPerson.id}`,updatedPerson)
+	const request = axios.put(`${baseUrl}/${person.id}`,updatedPerson)
 	return request.then(response => response.data)
 }
 export default {getAll, create, deletePerson, update};
