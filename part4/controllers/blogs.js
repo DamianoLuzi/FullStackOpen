@@ -21,6 +21,7 @@ blogsRouter.get('/info', (request, response) => {
 blogsRouter.post('/', async (request, response) => {
     console.log("request.body ",request.body)
     const body = request.body
+    if(!body || !body.title || !body.author) return response.status(400).json({ error: 'Missing required fields' });
 	const blog = new Blog({
 		title: body.title,
 		author: body.author,

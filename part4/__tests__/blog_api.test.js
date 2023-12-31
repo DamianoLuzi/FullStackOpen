@@ -79,6 +79,16 @@ test('id property is defined', async () => {
   expect(savedBlog.id).toBeDefined()
 })
 
+test('missing properties result in bad request', async () => {
+  const addedBlog = new Blog({
+    "author": "Marianne Sheridan",
+    "url": "http://gorgeusblog.om",
+    "likes": 333
+  })
+  const response = await api.post('/api/blogs')
+  expect(response.status).toBe(400)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
