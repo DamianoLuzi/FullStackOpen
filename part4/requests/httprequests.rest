@@ -2,11 +2,28 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "A staggering blog",
-    "author": "Me",
-    "url": "http://staggeringblog.om",
+    "title": "A grand blog",
+    "author": "Bloody me",
+    "url": "http://grandblog.com",
     "likes": 2222
 }
 
 ######
 GET http://localhost:3001/api/blogs 
+
+######
+GET http://localhost:3001/api/blogs/65914ee3a598543f0c03ad56
+
+#######
+DELETE http://localhost:3001/api/blogs/65a064672caccf2f1e59d5ce
+
+######
+PUT http://localhost:3001/api/blogs/65a0623ed389c1cbd7701611
+Content-Type: application/json
+
+{
+    "title": "A brilliant blog",
+    "author": "it's me, bloody hell",
+    "url": "http://brilliantblog.com",
+    "likes": 2222
+}
