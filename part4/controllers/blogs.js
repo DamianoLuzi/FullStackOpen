@@ -1,15 +1,13 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-blogsRouter.get('/', (request, response) => {
-	Blog
-		.find({})
-		.then(blogs => {
-			response.json(blogs)
-		})
+blogsRouter.get('/', async (request, response) => {
+	const blogs = await Blog.find({})
+	if(blogs.length === 0) console.log("get('/api/blogs') returns empty array",blogs)
+	response.json(blogs)
 })
 
-blogsRouter.post('/', (request, response) => {
+blogsRouter.post('/', async (request, response) => {
 	//const blog = new Blog(request.body)
 	const body = request.body
 
@@ -24,11 +22,13 @@ blogsRouter.post('/', (request, response) => {
 		likes: body.likes ? body.likes : 0
 	})
 
-	blog
+	try {
+		const result = await blog
 		.save()
-		.then(result => {
-			response.status(201).json(result)
-		})
+	  response.status(201).json(result)
+	} catch (error) {
+		console.log("post('/') error",error)
+	}
 })
 
 blogsRouter.get('/:id', async (request, response, next) => {

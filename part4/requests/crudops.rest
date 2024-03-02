@@ -5,14 +5,14 @@ Content-Type: application/json
   "title": "Blog added via rest client",
   "author": "me",
   "url": "mockblogurl",
-  "likes": 777
+  "likes": 33333
 }
 ###
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Another Blog added via rest client",
+  "title": "Another Blog added via rest client before adding test db",
   "author": "me",
   "url": "mockblogurl",
   "likes": 888
