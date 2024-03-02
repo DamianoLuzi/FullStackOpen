@@ -1,0 +1,49 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Blog added via rest client",
+  "author": "me",
+  "url": "mockblogurl",
+  "likes": 777
+}
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Another Blog added via rest client",
+  "author": "me",
+  "url": "mockblogurl",
+  "likes": 888
+}
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "_id": "5a422a851b54a676234d17f7",
+	"title": "Blog with _id",
+	"author": "me",
+	"url": "https://reactpatterns.com/",
+	"likes": 7,
+	"__v": 0
+}
+###
+GET http://localhost:3001/api/blogs
+###
+GET http://localhost:3001/api/blogs/65e30c89b8f27384efbb4980
+###
+GET http://localhost:3001/api/blogs/65e30564c6f25e83d960272d
+###unmatched id 
+GET http://localhost:3001/api/blogs/65e30564c6f25e83d960273b
+###
+PUT http://localhost:3001/api/blogs/65e2ef767d50407b6d8fba36
+Content-Type: application/json
+
+{
+    "title": "Updated by PUT request",
+    "author": "me agaiin",
+    "url": "http://brilliantblog.com",
+    "likes": 2222
+}
