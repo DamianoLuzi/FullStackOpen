@@ -4,6 +4,7 @@ import NewBlogForm from './components/NewBlogForm.jsx'
 import Notification from './components/Notification.jsx'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Togglable.jsx'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
@@ -15,22 +16,22 @@ const App = () => {
     async function fetchBlogs() {
       const blogs = await blogService.getAll()
       console.log("blogs", blogs)
-      setBlogs( blogs )
-    } 
-    fetchBlogs()   
+      setBlogs(blogs)
+    }
+    fetchBlogs()
   }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
-    if(loggedUserJSON){
+    if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
-      console.log("local storage updated",user,user.token)
+      console.log("local storage updated", user, user.token)
     }
-  },[])
+  }, [])
 
-  const handleLongin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     try {
       const user = await loginService.login({
@@ -54,7 +55,7 @@ const App = () => {
 
   const handleLogout = async () => {
     setUser(null)
-  } 
+  }
 
   const addBlog = async (blogObject) => {
     const returnedBlog = await blogService.createBlog(blogObject)
@@ -63,45 +64,65 @@ const App = () => {
     setTimeout(() => {
       setMessage(null)
     }, 5000)
-  } 
+  }
 
-  return(
-    (user === null) ? 
-    <div>
-      <h2>Log into application</h2>
-      <Notification message={message} />
-      <form onSubmit={handleLongin}>
-        <div>
-          Username
-          <input 
-            type="text"
-            value={username}
-            onChange={({target}) => setUsername(target.value)}
-            id="username">
-          </input>
-        </div>
-        <div>
-          Password
-          <input
-            type="text"
-            value={password}
-            onChange={({target}) => setPassword(target.value)}
-            id="password">
-          </input>
-        </div>
-        <button type="submit" id="login-button">login</button>
-      </form>
-    </div> : 
-    <div>
-    <h2>blogs</h2>
-    <Notification message={message} />
-    <p>{user.username} - sucessfully logged in!</p>
-    <button type="submit" onClick={handleLogout}>logout</button>
-    <NewBlogForm createBlog={addBlog}/>
-    {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} user={user}/>
-    )}
-    </div>
+  const LoginForm = (props) => {
+    return (
+      <div>
+        <form onSubmit={props.handleSubmit}>
+          <div>
+            Username
+            <input
+              type="text"
+              value={username}
+              onChange={props.handleUsernameChange}
+              id="username">
+            </input>
+          </div>
+          <div>
+            Password
+            <input
+              type="text"
+              value={password}
+              onChange={props.handlePasswordChange}  //({target}) => setPassword(target.value) quicker but requires state management
+              id="password">
+            </input>
+          </div>
+          <button type="submit" id="login-button">login</button>
+        </form>
+      </div>
+    )
+
+  }
+
+  return (
+    (user === null) ?
+      <div>
+        <h2>Log into application</h2>
+        <Notification message={message} />
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
+      </div> :
+      <div>
+        <h1 style={{color:"blue"}}>blogs</h1>
+        <Notification message={message} />
+        <p>{user.username} - sucessfully logged in!</p>
+        <button type="submit" onClick={handleLogout} 
+          style={{
+            color:"white",
+            backgroundColor: 'red'}}>logout</button>
+        <Togglable buttonLabel="create a new blog">
+          <NewBlogForm createBlog={addBlog} />
+        </Togglable>
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} user={user} />
+        )}
+      </div>
   )
 
 }

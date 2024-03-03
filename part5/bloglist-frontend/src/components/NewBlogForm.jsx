@@ -19,9 +19,9 @@ const NewBlogForm = ({createBlog}) => {
 
   return(
   <div>
-    <p>create a new blog</p>
+    <p style={{ fontSize: '20px', marginBottom: '10px' }}>create a new blog</p>
     <form onSubmit={addBlog}>
-        <div>
+        <div style={{ marginBottom: '15px' }}>
           Title:
           <input 
             type="text"
@@ -30,7 +30,7 @@ const NewBlogForm = ({createBlog}) => {
             id="title">
           </input>
         </div>
-        <div>
+        <div style={{ marginBottom: '15px' }}>
           Author:
           <input
             type="text"
@@ -39,7 +39,7 @@ const NewBlogForm = ({createBlog}) => {
             id="author">
           </input>
         </div>
-        <div>
+        <div style={{ marginBottom: '15px' }}>
           URL:
           <input
             type="text"
@@ -48,7 +48,14 @@ const NewBlogForm = ({createBlog}) => {
             id="url">
           </input>
         </div>
-        <button type="submit" id="new-blog-button">create</button>
+        <button type="submit" id="new-blog-button" 
+          style={{ 
+            backgroundColor: '#4caf50',
+           color: 'white',
+            padding: '10px 15px',
+             border: 'none',
+              borderRadius: '4px',
+               cursor: 'pointer' }}>create</button>
       </form>
   </div>)
 }
