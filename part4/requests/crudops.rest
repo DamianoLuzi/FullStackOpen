@@ -2,10 +2,11 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Blog added via rest client",
+  "title": "Blog added via rest client with user",
   "author": "me",
   "url": "mockblogurl",
-  "likes": 33333
+  "likes": 33333,
+  "userId": "65e4445753a89b837b406601"
 }
 ###
 POST http://localhost:3001/api/blogs
@@ -47,3 +48,6 @@ Content-Type: application/json
     "url": "http://brilliantblog.com",
     "likes": 2222
 }
+
+###
+DELETE http://localhost:3001/api/blogs/65e312df980477f64d2b4d2a
