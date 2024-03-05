@@ -1,6 +1,7 @@
 import { useState, useEffect,useRef } from 'react'
 import Blog from './components/Blog'
 import NewBlogForm from './components/NewBlogForm.jsx'
+import LoginForm from './components/LoginForm.jsx'
 import Notification from './components/Notification.jsx'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -80,35 +81,7 @@ const App = () => {
     await blogService.deleteBlog(id)
     setRefresh(!refresh)
   }
-  const LoginForm = (props) => {
-    return (
-      <div>
-        <form onSubmit={props.handleSubmit}>
-          <div>
-            Username
-            <input
-              type="text"
-              value={username}
-              onChange={props.handleUsernameChange}
-              id="username">
-            </input>
-          </div>
-          <div>
-            Password
-            <input
-              type="text"
-              value={password}
-              onChange={props.handlePasswordChange}  //({target}) => setPassword(target.value) quicker but requires state management
-              id="password">
-            </input>
-          </div>
-          <button type="submit" id="login-button">login</button>
-        </form>
-      </div>
-    )
-
-  }
-
+  
   return (
     (user === null) ?
       <div>
