@@ -20,9 +20,22 @@ const createBlog = async (newBlog) => {
     console.log("post response",response)
     return response.data
   } catch (error) {
+    console.log(newBlog)
     console.log("axios.post('/') error", error)
-    return response.status(500)
+    //return response.status(500)
   }
 }
+const update = async (id, newBlog) => {
+  const response = await axios.put(`${baseUrl}/${id}`, newBlog)
+  return response.data
+}
 
-export default { getAll, createBlog, setToken}
+const deleteBlog = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  return response.data
+}
+
+export default { getAll, createBlog, setToken, update, deleteBlog}

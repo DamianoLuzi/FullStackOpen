@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useRef } from 'react'
 import Blog from './components/Blog'
 import NewBlogForm from './components/NewBlogForm.jsx'
 import Notification from './components/Notification.jsx'
@@ -11,15 +11,18 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(null)
+  const [refresh, setRefresh] = useState(false)
+  const blogFormRef= useRef()
 
   useEffect(() => {
     async function fetchBlogs() {
       const blogs = await blogService.getAll()
       console.log("blogs", blogs)
+      blogs.sort((a,b) => b.likes - a.likes)
       setBlogs(blogs)
     }
     fetchBlogs()
-  }, [])
+  }, [refresh])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
@@ -54,10 +57,12 @@ const App = () => {
   }
 
   const handleLogout = async () => {
+    window.localStorage.clear()  //removing users data from the localStorage
     setUser(null)
   }
 
   const addBlog = async (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     const returnedBlog = await blogService.createBlog(blogObject)
     setBlogs(blogs.concat(returnedBlog))
     setMessage(`${returnedBlog.title} by ${returnedBlog.author} successfully added!`)
@@ -65,7 +70,16 @@ const App = () => {
       setMessage(null)
     }, 5000)
   }
+  
+  const addLikes = async(id, blogObject) => {
+    await blogService.update(id, blogObject)
+    setRefresh(!refresh)
+  }
 
+  const deleteBlog = async (id) => {
+    await blogService.deleteBlog(id)
+    setRefresh(!refresh)
+  }
   const LoginForm = (props) => {
     return (
       <div>
@@ -116,11 +130,11 @@ const App = () => {
           style={{
             color:"white",
             backgroundColor: 'red'}}>logout</button>
-        <Togglable buttonLabel="create a new blog">
+        <Togglable buttonLabel="create a new blog" ref={blogFormRef}>
           <NewBlogForm createBlog={addBlog} />
         </Togglable>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} user={user} />
+          <Blog key={blog.id} blog={blog} user={user} addLikes={addLikes} deleteBlog={deleteBlog}/>
         )}
       </div>
   )
