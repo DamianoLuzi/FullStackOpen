@@ -2,7 +2,7 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-  "username": "another user added via rest client POST request",
+  "username": "new user",
   "name": "me",
   "password": "Obrigadissimo"
 }
