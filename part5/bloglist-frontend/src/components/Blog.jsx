@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Blog = ({ blog, addLikes, deleteBlog }) => {
+const Blog = ({ blog, addLikes, deleteBlog, user }) => {
 
   const [visible, setVisible] = useState(false)
   const toggleVisibility = () => {
@@ -13,7 +13,7 @@ const Blog = ({ blog, addLikes, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  const textStyle = { 
+  const textStyle = {
     fontSize: '20px',
     fontWeight: 'bold',
     marginBottom: '5px'
@@ -30,33 +30,35 @@ const Blog = ({ blog, addLikes, deleteBlog }) => {
   }
 
   const handleDelete = () => {
-    if(window.confirm(`Remove blog ${blog.title} by ${blog.author}`)){
-    deleteBlog(blog.id)
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      deleteBlog(blog.id)
     }
   }
 
-  return(
-    <div style={blogStyle} >
+  const deleteButtonVisible = blog.user.id === user.id ? true : false
+
+  return (
+    <div style={blogStyle} className="blog">
       {visible ? (
         <div>
-        <p style={textStyle}>
-        {blog.title} by {blog.author}
-        <button onClick={handleDelete}>delete</button>
-      </p>
-      <p>
-        find out more: {blog.url}
-      </p>
-      <p>
-        likes: {blog.likes}
-        <button onClick={handleLike}>like</button>
-      </p> 
-      </div>
-      ) :(
+          <p style={textStyle}>
+            {blog.title} by {blog.author}
+            {deleteButtonVisible && <button onClick={handleDelete} id="remove-button">delete</button>}
+          </p>
+          <p>
+            find out more: {blog.url}
+          </p>
+          <p>
+            likes: {blog.likes}
+            <button onClick={handleLike} id="like-button">like</button>
+          </p>
+        </div>
+      ) : (
         <p style={textStyle}>{blog.title}</p>
       )}
-      <button onClick={toggleVisibility}>{visible ? 'Hide' : 'Show'}</button>
-    </div> 
-  ) 
+      <button onClick={toggleVisibility} id="show-button">{visible ? 'Hide' : 'Show'}</button>
+    </div>
+  )
 }
 
 export default Blog

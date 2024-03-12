@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const NewBlogForm = ({createBlog}) => {
+const NewBlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [likes, setLikes] = useState('')
-  
+
   const addBlog = (e) => {
     e.preventDefault()
     createBlog({
@@ -20,46 +20,47 @@ const NewBlogForm = ({createBlog}) => {
   }
 
   return(
-  <div>
-    <p style={{ fontSize: '20px', marginBottom: '10px' }}>create a new blog</p>
-    <form onSubmit={addBlog}>
-        <div style={{ marginBottom: '15px' }}>
-          Title:
-          <input 
+    <div>
+      <p>create a new blog</p>
+      <form onSubmit={addBlog}>
+        <div>
+          <label htmlFor="title">Title:</label>
+          <input
             type="text"
             value={title}
-            onChange={({target}) => setTitle(target.value)}
+            onChange={({ target }) => setTitle(target.value)}
             id="title">
           </input>
         </div>
-        <div style={{ marginBottom: '15px' }}>
+        <div>
           Author:
           <input
             type="text"
             value={author}
-            onChange={({target}) => setAuthor(target.value)}
-            id="author">
+            onChange={({ target }) => setAuthor(target.value)}
+            id="author"
+          >
           </input>
         </div>
-        <div style={{ marginBottom: '15px' }}>
+        <div >
           URL:
           <input
-            type="text"
             value={url}
-            onChange={({target}) => setUrl(target.value)}
+            onChange={({ target }) => setUrl(target.value)}
             id="url">
           </input>
         </div>
-        <button type="submit" id="new-blog-button" 
-          style={{ 
+        <button type="submit" id='create-button'
+          style={{
             backgroundColor: '#4caf50',
-           color: 'white',
+            color: 'white',
             padding: '10px 15px',
-             border: 'none',
-              borderRadius: '4px',
-               cursor: 'pointer' }}>create</button>
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer' }}>create</button>
       </form>
-  </div>)
+    </div>
+  )
 }
 
 export default NewBlogForm

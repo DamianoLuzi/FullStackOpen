@@ -1,4 +1,4 @@
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types'
 const LoginForm = (props) => {
   return (
     <div>
@@ -12,26 +12,28 @@ const LoginForm = (props) => {
             id="username">
           </input>
         </div>
-        <div>
+        <div style={{ margin: '40px' }}>
           Password
           <input
             type="text"
+            id="password"
+            autoComplete="off"
             value={props.password}
             onChange={props.handlePasswordChange}  //({target}) => setPassword(target.value) quicker but requires state management
-            id="password">
+          >
           </input>
         </div>
-        <button type="submit" id="login-button">login</button>
+        <button type="submit" id="login-button" style={{ margin: '40px' }}>login</button>
       </form>
     </div>
   )}
 
-  LoginForm.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    handleUsernameChange: PropTypes.func.isRequired,
-    handlePasswordChange: PropTypes.func.isRequired,
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired
-  }
+LoginForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleUsernameChange: PropTypes.func.isRequired,
+  handlePasswordChange: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
+}
 
-  export default LoginForm
+export default LoginForm

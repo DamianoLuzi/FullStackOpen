@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     async function fetchBlogs() {
       const blogs = await blogService.getAll()
-      console.log("blogs", blogs)
+      console.log('blogs', blogs)
       blogs.sort((a,b) => b.likes - a.likes)
       setBlogs(blogs)
     }
@@ -31,7 +31,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
-      console.log("local storage updated", user, user.token)
+      console.log('local storage updated', user, user.token)
     }
   }, [])
 
@@ -46,6 +46,7 @@ const App = () => {
       window.localStorage.setItem(
         'loggedBloglistUser', JSON.stringify(user)
       )
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -71,7 +72,7 @@ const App = () => {
       setMessage(null)
     }, 5000)
   }
-  
+
   const addLikes = async(id, blogObject) => {
     await blogService.update(id, blogObject)
     setRefresh(!refresh)
@@ -81,7 +82,7 @@ const App = () => {
     await blogService.deleteBlog(id)
     setRefresh(!refresh)
   }
-  
+
   return (
     (user === null) ?
       <div>
@@ -96,13 +97,13 @@ const App = () => {
         />
       </div> :
       <div>
-        <h1 style={{color:"blue"}}>blogs</h1>
+        <h1 style={{ color:'blue' }}>blogs</h1>
         <Notification message={message} />
         <p>{user.username} - sucessfully logged in!</p>
-        <button type="submit" onClick={handleLogout} 
+        <button type="submit" onClick={handleLogout}
           style={{
-            color:"white",
-            backgroundColor: 'red'}}>logout</button>
+            color:'white',
+            backgroundColor: 'red' }}>logout</button>
         <Togglable buttonLabel="create a new blog" ref={blogFormRef}>
           <NewBlogForm createBlog={addBlog} />
         </Togglable>
