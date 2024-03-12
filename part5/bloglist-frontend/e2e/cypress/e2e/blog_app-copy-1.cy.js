@@ -110,13 +110,13 @@ describe('Blog app', function () {
       cy.get('#login-button', { force: true }).click()
       cy.contains('create a new blog').click()
       cy.get('#title').type('most liked blog')
-      cy.get('#author').type('kkkk')
+      cy.get('#author').type('backend dev')
       cy.get('#url').type('https://www.obrigado.com')
       cy.get('#create-button').click({ force: true })
 
       cy.contains('create a new blog').click()
       cy.get('#title').type('second most liked blog')
-      cy.get('#author').type('gggg')
+      cy.get('#author').type('software engineer')
       cy.get('#url').type('https://www.obrigadissimo.com')
       cy.get('#create-button').click({ force: true })
 
