@@ -9,7 +9,6 @@ const AnecdotesList = () => {
   const vote = (anec_id, content) => {
     console.log('vote', anec_id, content)
     dispatch(addVotes(anec_id))
-    //dispatch(setNotification(`You've just voted for "${content}" !`, 5))
   }
   return (
     <div>
