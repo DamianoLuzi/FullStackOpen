@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit"
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -18,8 +20,44 @@ const asObject = (anecdote) => {
 }
 
 const initialState = anecdotesAtStart.map(asObject)
+//createSlice returns an object containing the reducer 
+//as well as the action creators defined by the reducers parameter
+const anecdotesSlice = createSlice({
+  name:'anecdote',
+  initialState: initialState,
+  reducers: {
+    addVotes(state, action) {
+      console.log(action)
+      const id = action.payload
+      const votedAnecdote = state.find(x => x.id === id)
+      const updatedAnecdote = {
+        ...votedAnecdote,
+        votes: votedAnecdote.votes + 1
+      }
+      console.log(JSON.parse(JSON.stringify(state)))
+      return state.map(ancdt => 
+        ancdt.id !== id ? ancdt : updatedAnecdote
+      )
+    },
+    createAnecdotes(state, action) {
+      const newAnecdote = action.payload
+      console.log(JSON.parse(JSON.stringify(state)))
+      state.push({        
+        content: newAnecdote, 
+        id: getId(),
+        votes: 0   
+      })
+    }
+  }
+})
 
-const anecdoteReducer = (state = initialState, action) => {
+export const  {addVotes, createAnecdotes} = anecdotesSlice.actions
+// The reducer can be accessed by the noteSlice.reducer
+export default anecdotesSlice.reducer
+
+
+
+/* const anecdoteReducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch(action.type) {
@@ -60,5 +98,4 @@ export const createAnecdote = (anecdote) => {
     
   }
 }
-
-export default anecdoteReducer
+*/
