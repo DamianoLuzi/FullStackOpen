@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
-import { createAnecdotes } from "../reducers/anecdoteReducer"
-import anecdotesService from "../../services/anecdotesService"
+import { createAnecdote } from "../reducers/anecdoteReducer"
+import { displayNotification } from "../reducers/notificationReducer"
 export const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
@@ -8,12 +8,9 @@ export const AnecdoteForm = () => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    const newAnec = await anecdotesService.createNewAnecdote(content)
-    dispatch(createAnecdotes(content))
-    dispatch(showNotification(`"${content}" successfully added!`))
-    setTimeout(() => {
-      dispatch(showNotification(''))
-    }, 5000)
+    //substituting async functions inside components, enclosing them inside the reducer which then dispatches them
+    dispatch(createAnecdote(content))
+    dispatch(displayNotification(`You added "${content}"!`, 5))
 
   }
   return (

@@ -13,11 +13,13 @@ const AnecdotesList = () => {
         .includes(state.filters.toLowerCase())) 
         .sort((a,b) => b.votes-a.votes)
   })
+
   const dispatch = useDispatch()
+
   const vote = (anec_id, content) => {
     console.log('voted', anec_id, content)
     dispatch(addVotes(anec_id))
-    dispatch(setNotification(`You just liked ${content}`,1))
+    dispatch(setNotification(`You voted for "${content}" !`, 5))
   }
   return (
     <div>
